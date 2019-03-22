@@ -1,0 +1,15 @@
+function [alpha_m,beta_m,alpha_h,beta_h,alpha_p,beta_p,alpha_d,beta_d,alpha_f,beta_f,alpha_q,beta_q]=rate_constants(V)
+
+alpha_m=(V+37)/(1-exp(-(V+37)/10)); %am
+beta_m=(40*exp(-5.6*10^(-2)*(V+62))); %bm
+alpha_h=1.209*10^(-3)*exp((-(V+20))/6.534); %ah
+beta_h=1/(1+exp((-(V+30))/10)) ; %bh
+alpha_p=(9*10^(-3))/(1+exp((-(V+3.8))/9.71))+6*10^(-4); %ap
+beta_p=(2.25*10^(-4)*(V+40))/(exp(((V+40))/13.3)-1); %bp
+alpha_d=(1.045*10^(-2)*(V+35))/(1-exp(-(V+35)/2.5))+(3.125*10^(-2)*V)/(1-exp(-(V)/4.8));%ad
+beta_d=(4.21*10^(-3)*(V-5))/(exp((V-5)/2.5)-1); %bd
+alpha_f=(3.55*10^(-4)*(V+20))/(exp((V+20)/5.633)-1); %af
+beta_f=9.44*10^(-4)*(abs(V+60))/(1+exp(-(V+29.5)/4.16)); %bf
+alpha_q=3.4*10^(-4)*(V+100)/(exp((V+100)/4.4)-1)+4.95*10^(-5); %aq
+beta_q=5*10^(-4)*(V+40)/(1-exp((-(V+40))/6))+8.45*10^(-5); %bq
+end
