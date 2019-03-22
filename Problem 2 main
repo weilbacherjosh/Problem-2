@@ -1,0 +1,85 @@
+%%Problem 2
+
+
+clc; clear all; close all;
+% warning off MATLAB:divideByZero; % not necessary unless you hit threshold
+% potential exactly
+
+% Use rate_constantBR function to
+% evaluate the steady state (infinity) conditions for gating variables
+V=-84; 
+
+% Evaluate the steady state (fully open) values of gating variable alphas
+% and betas
+[alpha_m,beta_m,alpha_h,beta_h,alpha_p,beta_p,alpha_d,beta_d,alpha_f,beta_f,alpha_q,beta_q]=rate_constants(V);
+m_ss=alpha_m./(alpha_m+beta_m);
+h_ss=alpha_h./(alpha_h+beta_h);
+p_ss=alpha_p./(alpha_p+beta_p);
+d_ss=alpha_d./(alpha_d+beta_d);
+f_ss=alpha_f./(alpha_f+beta_f);
+q_ss=alpha_q./(alpha_q+beta_q);
+
+
+% Integrate the differential equations to solve for all variables as function of time
+
+options=odeset('AbsTol',1e-3); % To reduce computational time, reduced 
+                                % the accuracy tolerance
+% Set initial conditions to steady state values plus membrane voltage for
+% stimulation (absolute voltage, SS value is -84 mV)
+yzero=[-55,m_ss,h_ss,p_ss,d_ss,f_ss,q_ss]; 
+
+% 1000 ms is sufficient for single AP
+tspan=[1:1:1000];
+
+% Use ODE45 to solve equations
+[t,y]=ode45(@equations2,tspan,yzero,options);
+
+% Plot the results
+hold on;
+figure(1); plot(t,y(:,1),'r');
+title('Time Profile of Membrane Potential for BR Model')
+xlabel('Time (ms)'); ylabel('Potential (mV)')
+%legend('Iapp=0','Iapp=1','Iapp=2','Iapp=3');
+hold off
+GNa=0;
+GK=0;
+yzero1=[-55,m_ss,h_ss,p_ss,d_ss,f_ss,q_ss,GNa,GK]; 
+
+% 1000 ms is sufficient for single AP
+tspan=[1:1:1000];
+
+% Use ODE45 to solve equations
+[t,y6]=ode45(@equations6,tspan,yzero1,options);
+
+
+figure(3);
+hold on
+plot(t,y6(:,8),'r');
+plot(t,y6(:,9),'k');
+title('GNa and GK conductance')
+xlabel('Time (ms)'); ylabel('Potential (mV)')
+legend('GNa','GK');
+hold off
+
+
+% Use ODE45 to solve equations
+[t,y]=ode45(@equations,tspan,yzero,options);
+[t2,y2]=ode45(@equations2,tspan,yzero,options);
+[t3,y3]=ode45(@equations3,tspan,yzero,options);
+[t4,y4]=ode45(@equations4,tspan,yzero,options);
+[t5,y5]=ode45(@equations5,tspan,yzero,options);
+% Plot the results
+
+
+
+figure(2); 
+hold on;
+plot(t,y(:,1),'r');
+plot(t2,y2(:,1),'g');
+plot(t3,y3(:,1),'b');
+plot(t4,y4(:,1),'k');
+plot(t5,y5(:,1),'y');
+title('Affects of Current on Membrane Potential')
+xlabel('Time (ms)'); ylabel('Potential (mV)')
+legend('Iapp=0','Iapp=1','Iapp=2','Iapp=3','Iapp=4');
+
