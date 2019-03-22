@@ -1,0 +1,23 @@
+function dy=equations(t,y)
+V=y(1); m=y(2); h=y(3); p=y(4); d=y(5); f=y(6); q=y(7);
+
+
+Ih=0.4*q*(V+25);
+Is=12.5*(0.95*d+0.05)*(0.95*f+0.05)*(exp((V-30)/15)-1);
+Il=0.8*(1-exp((-(V+60))/20));
+Ik=0.7*p*(exp(0.0277*(V+90))-1)/(exp(0.0277*(V+40)));
+Ina=0.5*m^(3)*h*(V-30);
+
+[alpha_m,beta_m,alpha_h,beta_h,alpha_p,beta_p,alpha_d,beta_d,alpha_f,beta_f,alpha_q,beta_q]=rate_constants(V);
+Iapp=0; Cm=1;
+
+dy=[(-Ina-Ik-Il-Is-Ih+Iapp)/Cm
+    alpha_m*(1-m)-beta_m*m
+    alpha_h*(1-h)-beta_h*h
+    alpha_p*(1-p)-beta_p*p
+    alpha_d*(1-d)-beta_d*d
+    alpha_f*(1-f)-beta_f*f
+    alpha_q*(1-q)-beta_q*q];
+end
+
+
